@@ -12,9 +12,28 @@
 <!-- Hace que la página se ajuste al ancho del celular (diseño responsivo). -->
 <meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Belikosa.com</title>
+<title>Belikosa</title>
 <!-- Texto que ven Google y WhatsApp/redes cuando comparten el enlace. -->
-<meta name="description" content="Belikosa. Los Creadores Del Sexo Tumbado. Música, fotos, merch y booking.">
+<meta name="description" content="Belikosa. Los Creadores Del Sexo Tumbado. Corridos tumbados desde la CDMX: galería, merch y booking.">
+<!-- VISTA PREVIA AL COMPARTIR EL ENLACE (WhatsApp, Instagram, Facebook, X, etc.)
+     Esas apps leen estas etiquetas para mostrar la foto, el título y el texto.
+     IMPORTANTE: estas direcciones deben coincidir con el enlace de tu GitHub Pages (terminan en /). Si cambias el nombre del repositorio o usas un dominio propio, actualízalas.
+     La imagen es preview.jpg (1200x630) y debe estar en la raíz del repositorio, junto a index.html. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Belikosa">
+<meta property="og:description" content="Los Creadores Del Sexo Tumbado. Corridos tumbados desde la CDMX.">
+<meta property="og:url" content="https://luishertellez.github.io/belikosa/">
+<meta property="og:image" content="https://luishertellez.github.io/belikosa/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo de Belikosa sobre fondo negro">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Belikosa">
+<meta name="twitter:description" content="Los Creadores Del Sexo Tumbado. Corridos tumbados desde la CDMX.">
+<meta name="twitter:image" content="https://luishertellez.github.io/belikosa/preview.jpg">
+<!-- Ícono de la pestaña del navegador -->
+<link rel="icon" type="image/png" href="icono.png">
+<link rel="apple-touch-icon" href="icono.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Descarga la tipografía Archivo desde Google Fonts (pesos 400, 600 y 800). -->
@@ -106,6 +125,15 @@ h3{font-size:19px;margin:0 0 4px}
 .booking p{max-width:42ch}
 form{display:grid;gap:14px}
 label{display:grid;gap:6px;font-weight:600;font-size:15px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+[hidden]{display:none!important}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn.alt{background:transparent;color:var(--fg)}
+.btn.alt:hover{background:var(--fg);color:var(--bg)}
+/* Aviso del formulario: letras blancas en una caja con borde y una barra roja a la izquierda; no ocupa espacio mientras está vacío. */
+.form-status{margin:0;max-width:none;color:var(--fg);font-weight:600;font-size:15px;line-height:1.45}
+.form-status:not(:empty){padding:13px 16px;border:2px solid var(--line);border-left:6px solid var(--accent);background:rgba(240,241,225,.06)}
+input[type=date]{min-height:48px}
 input,textarea{font:inherit;color:var(--fg);background:transparent;border:2px solid var(--line);padding:11px 12px;border-radius:0;width:100%}
 textarea{min-height:120px;resize:vertical}
 /* REDES: bloques grandes que se ponen rojos al pasar el cursor. */
@@ -122,6 +150,7 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
   nav ul{gap:14px;font-size:15px}
   nav .logo{width:70px}
   .booking{grid-template-columns:1fr}
+  .row,.btns{grid-template-columns:1fr}
   .photos{flex-direction:column}
   .photos .col{width:100%}
 }
@@ -148,7 +177,7 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
 
 <!-- BIOGRAFÍA: texto corto sin título. EDITA AQUÍ el texto entre <p> y </p>. -->
 <section class="bio">
-  <p>Somos tres amigos de la CDMX y hacemos corridos tumbados con el estilo de nuestra ciudad. Hemos abierto shows para artistas como Ememalafe y Fntxy, y hemos tocado en eventos como <a href="https://www.instagram.com/temperaturamx" target="_blank" rel="noopener">@temperaturamx</a> y <a href="https://www.instagram.com/zezzionz" target="_blank" rel="noopener">@zezzionz</a>.</p>
+  <p>Somos tres amigos de la CDMX y hacemos corridos tumbados con el estilo de nuestra ciudad. Hemos abierto shows para artistas como Ememalafe y Fntxy, y hemos tocado en eventos como <a href="https://www.instagram.com/temperaturamx" target="_blank" rel="noopener">@temperaturamx</a> y <a href="https://www.instagram.com/zezzions/" target="_blank" rel="noopener">@zezzzionz</a>.</p>
   <p>También hemos pasado por bares y restaurantes como Godizilla Burguers, Dr. Bestia y Match Burguer Tlaxcala, y por eventos culturales como el Art Week CDMX y el Bazar Naviñero. Y si lo que buscas es música para tu fiesta, también tocamos en eventos privados, como cumpleaños y celebraciones.</p>
 </section>
 
@@ -172,7 +201,10 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
   <div class="socials" id="socials"></div>
 </section>
 
-<!-- SECCIÓN BOOKING: texto de contratación y formulario. Al enviar, JavaScript abre el correo del visitante con los datos. -->
+<!-- SECCIÓN BOOKING: texto de contratación y formulario.
+     La FECHA usa un calendario del navegador (input type="date").
+     El visitante elige cómo contactar: por correo (abre su app de correo con el mensaje escrito)
+     o por WhatsApp (pide el número del visitante y abre un chat con el mensaje escrito; ese botón solo aparece si hay número en WA_NUMERO). -->
 <section id="booking">
   <h2>Booking</h2>
   <div class="booking">
@@ -182,10 +214,20 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
     </div>
     <form id="form">
       <label>Nombre<input name="nombre" required autocomplete="name"></label>
-      <label>Ciudad y fecha del evento<input name="evento" required></label>
+      <div class="row">
+        <label>Ciudad del evento<input name="ciudad" required></label>
+        <label>Fecha del evento<input name="fecha" id="fecha" type="date" required></label>
+      </div>
       <label>Tipo de evento<input name="tipo" placeholder="Fiesta privada, festival, bar…"></label>
       <label>Mensaje<textarea name="mensaje"></textarea></label>
-      <button class="btn" type="submit">Enviar solicitud</button>
+      <!-- Número del visitante: solo es obligatorio si elige enviar por WhatsApp. -->
+      <label>Tu número de WhatsApp<small class="hint">Escríbelo si quieres contactarnos por WhatsApp. Por correo no es necesario.</small><input name="telefono" id="telefono" type="tel" inputmode="tel" autocomplete="tel" placeholder="55 1234 5678"></label>
+      <!-- Dos formas de contactarnos: correo (botón rojo) o WhatsApp (botón con borde). El de WhatsApp se oculta solo si no hay número en WA_NUMERO. -->
+      <div class="btns">
+        <button class="btn" type="submit" id="enviar">Enviar por correo</button>
+        <button class="btn alt" type="button" id="wa" hidden>Enviar por WhatsApp</button>
+      </div>
+      <p class="form-status" id="form-status" role="alert" aria-live="polite"></p>
     </form>
   </div>
 </section>
@@ -211,7 +253,13 @@ const P = {
 <script>
 // ZONA DE EDICIÓN: aquí cambias textos, enlaces y listas sin tocar el resto del código.
 /* ---- EDITA AQUÍ ---- */
+// Correo de booking.
 const EMAIL = "bdebelikosa@gmail.com";
+
+// WHATSAPP DE BOOKING: lada del país y número, SIN espacios ni signos. Ejemplo México: pais "52" y numero "5512345678".
+// Si WA_NUMERO está vacío, el botón de WhatsApp no se muestra y solo se puede contactar por correo.
+const WA_PAIS = "52";
+const WA_NUMERO = "5645536468";
 
 // col: columna (0 izquierda, 1 centro, 2 derecha). Orden por paleta:
 // izquierda = blanco y negro, rojo, naranja · centro = azul y blanco · derecha = azul y ámbar
@@ -323,12 +371,39 @@ SOCIALS.forEach(n => {
   $("socials").appendChild(a);
 });
 
-// FORMULARIO DE BOOKING: al enviar, no manda nada a un servidor.
-// Arma un correo (mailto:) con los datos y lo abre en la app de correo del visitante, dirigido a EMAIL.
+// CALENDARIO: la fecha del evento no puede ser anterior a hoy.
+const hoy = new Date(); hoy.setMinutes(hoy.getMinutes() - hoy.getTimezoneOffset());
+$("fecha").min = hoy.toISOString().slice(0, 10);
+
+// Convierte la fecha del calendario a texto, ej. "domingo, 14 de marzo de 2027".
+const fechaTexto = v => new Date(v + "T12:00:00").toLocaleDateString("es-MX", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+
+// BOTÓN DE WHATSAPP: solo se muestra si hay número en WA_NUMERO. Valida los campos obligatorios,
+// pide que el visitante deje su número de WhatsApp (si no, le avisa qué falta) y abre un chat con el mensaje ya escrito.
+const aviso = $("form-status");
+$("telefono").addEventListener("input", () => aviso.textContent = "");
+$("wa").hidden = !WA_NUMERO;
+$("wa").addEventListener("click", () => {
+  const form = $("form");
+  aviso.textContent = "";
+  if (!form.reportValidity()) return;
+  const d = Object.fromEntries(new FormData(form));
+  if (d.telefono.replace(/\D/g, "").length < 8) {
+    aviso.textContent = "Para enviar por WhatsApp escribe tu número de WhatsApp arriba, así podemos responderte.";
+    $("telefono").focus();
+    return;
+  }
+  const msg = `Hola Belikosa, quiero cotizar un evento.\nNombre: ${d.nombre}\nMi WhatsApp: ${d.telefono.trim()}\nCiudad: ${d.ciudad}\nFecha: ${fechaTexto(d.fecha)}\nTipo de evento: ${d.tipo || "-"}\n${d.mensaje ? "Mensaje: " + d.mensaje : ""}`;
+  window.open("https://wa.me/" + WA_PAIS + WA_NUMERO + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+});
+
+// BOTÓN DE CORREO: no manda nada a un servidor. Arma un correo (mailto:) con los datos
+// y lo abre en la app de correo del visitante, dirigido a EMAIL.
 $("form").addEventListener("submit", e => {
   e.preventDefault();
-  const f = new FormData(e.target);
-  const body = `Nombre: ${f.get("nombre")}\nEvento (ciudad y fecha): ${f.get("evento")}\nTipo: ${f.get("tipo")}\n\n${f.get("mensaje")}`;
+  aviso.textContent = "";
+  const d = Object.fromEntries(new FormData(e.target));
+  const body = `Nombre: ${d.nombre}\nCiudad: ${d.ciudad}\nFecha: ${fechaTexto(d.fecha)}\nTipo de evento: ${d.tipo || "-"}\n\n${d.mensaje || ""}`;
   location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Booking Belikosa")}&body=${encodeURIComponent(body)}`;
 });
 </script>
