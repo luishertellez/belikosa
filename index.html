@@ -84,7 +84,18 @@ h3{font-size:19px;margin:0 0 4px}
 /* GALERÍA DE FOTOS: 3 columnas; cada foto mantiene su forma original, sin recortes. */
 .photos{display:flex;gap:14px;align-items:flex-start}
 .photos .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
-.photos .ph{display:block;width:100%;height:auto;border:2px solid var(--line);background:var(--tile)}
+.photos .ph{display:block;width:100%;height:auto;border:2px solid var(--line);background:var(--tile);cursor:zoom-in}
+/* VISOR DE FOTOS: al tocar una foto se abre en grande sobre fondo negro, con flechas para pasar a la siguiente. */
+body.lb-open{overflow:hidden}
+.lb{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 64px) 14px calc(env(safe-area-inset-bottom,0px) + 14px)}
+.lb img{max-width:min(94vw,1500px);max-height:calc(100vh - 150px);object-fit:contain;border:2px solid var(--line);display:block}
+.lb-cap{margin:0;color:var(--muted);font-size:14px;font-weight:600}
+.lb button{position:absolute;width:48px;height:48px;font:600 30px/1 "Archivo",sans-serif;color:var(--fg);background:#0a0a0a;border:2px solid var(--line);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.lb button:hover{background:var(--accent)}
+.lb-x{top:calc(env(safe-area-inset-top,0px) + 12px);right:14px}
+.lb-nav{top:50%;margin-top:-24px}
+.lb-prev{left:10px}
+.lb-next{right:10px}
 /* RECUADRO: se usa como espacio de foto en merch o cuando falta una imagen. */
 .tile{aspect-ratio:4/3;background:var(--tile);border:2px solid var(--line);display:flex;align-items:flex-end;padding:12px;color:var(--muted);font-size:14px;overflow:hidden;position:relative}
 .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -130,9 +141,6 @@ label{display:grid;gap:6px;font-weight:600;font-size:15px}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .btn.alt{background:transparent;color:var(--fg)}
 .btn.alt:hover{background:var(--fg);color:var(--bg)}
-/* Aviso del formulario: letras blancas en una caja con borde y una barra roja a la izquierda; no ocupa espacio mientras está vacío. */
-.form-status{margin:0;max-width:none;color:var(--fg);font-weight:600;font-size:15px;line-height:1.45}
-.form-status:not(:empty){padding:13px 16px;border:2px solid var(--line);border-left:6px solid var(--accent);background:rgba(240,241,225,.06)}
 input[type=date]{min-height:48px}
 input,textarea{font:inherit;color:var(--fg);background:transparent;border:2px solid var(--line);padding:11px 12px;border-radius:0;width:100%}
 textarea{min-height:120px;resize:vertical}
@@ -177,7 +185,7 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
 
 <!-- BIOGRAFÍA: texto corto sin título. EDITA AQUÍ el texto entre <p> y </p>. -->
 <section class="bio">
-  <p>Somos tres amigos de la CDMX y hacemos corridos tumbados con el estilo de nuestra ciudad. Hemos abierto shows para artistas como Ememalafe y Fntxy, y hemos tocado en eventos como <a href="https://www.instagram.com/temperaturamx" target="_blank" rel="noopener">@temperaturamx</a> y <a href="https://www.instagram.com/zezzions/" target="_blank" rel="noopener">@zezzions</a>.</p>
+  <p>Somos tres amigos de la CDMX y hacemos corridos tumbados con el estilo de nuestra ciudad. Hemos abierto shows para artistas como Ememalafe y Fntxy, y hemos tocado en eventos como <a href="https://www.instagram.com/temperaturamx" target="_blank" rel="noopener">@temperaturamx</a> y <a href="https://www.instagram.com/zezzions/" target="_blank" rel="noopener">@zezzzionz</a>.</p>
   <p>También hemos pasado por bares y restaurantes como Godizilla Burguers, Dr. Bestia y Match Burguer Tlaxcala, y por eventos culturales como el Art Week CDMX y el Bazar Naviñero. Y si lo que buscas es música para tu fiesta, también tocamos en eventos privados, como cumpleaños y celebraciones.</p>
 </section>
 
@@ -204,7 +212,7 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
 <!-- SECCIÓN BOOKING: texto de contratación y formulario.
      La FECHA usa un calendario del navegador (input type="date").
      El visitante elige cómo contactar: por correo (abre su app de correo con el mensaje escrito)
-     o por WhatsApp (pide el número del visitante y abre un chat con el mensaje escrito; ese botón solo aparece si hay número en WA_NUMERO). -->
+     o por WhatsApp (abre un chat con el mensaje escrito; ese botón solo aparece si hay número en WA_NUMERO). -->
 <section id="booking">
   <h2>Booking</h2>
   <div class="booking">
@@ -220,14 +228,11 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
       </div>
       <label>Tipo de evento<input name="tipo" placeholder="Fiesta privada, festival, bar…"></label>
       <label>Mensaje<textarea name="mensaje"></textarea></label>
-      <!-- Número del visitante: solo es obligatorio si elige enviar por WhatsApp. -->
-      <label>Tu número de WhatsApp<small class="hint">Escríbelo si quieres contactarnos por WhatsApp. Por correo no es necesario.</small><input name="telefono" id="telefono" type="tel" inputmode="tel" autocomplete="tel" placeholder="55 1234 5678"></label>
       <!-- Dos formas de contactarnos: correo (botón rojo) o WhatsApp (botón con borde). El de WhatsApp se oculta solo si no hay número en WA_NUMERO. -->
       <div class="btns">
         <button class="btn" type="submit" id="enviar">Enviar por correo</button>
         <button class="btn alt" type="button" id="wa" hidden>Enviar por WhatsApp</button>
       </div>
-      <p class="form-status" id="form-status" role="alert" aria-live="polite"></p>
     </form>
   </div>
 </section>
@@ -237,6 +242,15 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
   <span>© 2026 Belikosa</span>
   <a href="mailto:bdebelikosa@gmail.com">bdebelikosa@gmail.com</a>
 </footer>
+
+<!-- VISOR DE FOTOS (oculto hasta que se toca una foto de la galería). -->
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <button type="button" class="lb-x" id="lb-x" aria-label="Cerrar">&times;</button>
+  <button type="button" class="lb-nav lb-prev" id="lb-prev" aria-label="Foto anterior">&#8249;</button>
+  <img id="lb-img" alt="">
+  <button type="button" class="lb-nav lb-next" id="lb-next" aria-label="Foto siguiente">&#8250;</button>
+  <p class="lb-cap" id="lb-cap"></p>
+</div>
 
 <script>
 /* Rutas de las fotos (carpeta fotos/) */
@@ -306,6 +320,35 @@ const tile = (src, alt, cls="") => {
   return d;
 };
 
+// VISOR DE FOTOS: abre la foto en grande. Se cierra con la X, tocando el fondo o con Esc;
+// se navega con las flechas del visor, las flechas del teclado o deslizando el dedo.
+const lb = $("lb"), lbImg = $("lb-img");
+let actual = 0, previo = null;
+const verFoto = i => {
+  actual = (i + PHOTOS.length) % PHOTOS.length;
+  lbImg.src = PHOTOS[actual].src; lbImg.alt = PHOTOS[actual].alt;
+  $("lb-cap").textContent = (actual + 1) + " / " + PHOTOS.length;
+};
+const abrirVisor = i => { previo = document.activeElement; verFoto(i); lb.hidden = false; document.body.classList.add("lb-open"); $("lb-x").focus(); };
+const cerrarVisor = () => { lb.hidden = true; document.body.classList.remove("lb-open"); lbImg.removeAttribute("src"); if (previo) previo.focus(); };
+$("lb-x").addEventListener("click", cerrarVisor);
+$("lb-prev").addEventListener("click", () => verFoto(actual - 1));
+$("lb-next").addEventListener("click", () => verFoto(actual + 1));
+lb.addEventListener("click", e => { if (e.target === lb) cerrarVisor(); });
+document.addEventListener("keydown", e => {
+  if (lb.hidden) return;
+  if (e.key === "Escape") cerrarVisor();
+  if (e.key === "ArrowLeft") verFoto(actual - 1);
+  if (e.key === "ArrowRight") verFoto(actual + 1);
+});
+let x0 = null;
+lb.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive:true});
+lb.addEventListener("touchend", e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0; x0 = null;
+  if (Math.abs(dx) > 50) verFoto(actual + (dx < 0 ? 1 : -1));
+});
+
 // FOTOS: crea las 3 columnas y mete en cada una las fotos de la lista PHOTOS
 // según su campo col (0 izquierda, 1 centro, 2 derecha).
 [0,1,2].forEach(c => {
@@ -315,6 +358,10 @@ const tile = (src, alt, cls="") => {
     if (p.src) {
       const i = new Image();
       i.src = p.src; i.alt = p.alt; i.className = "ph"; i.loading = "lazy";
+      const k = PHOTOS.indexOf(p);   // al tocar la foto se abre en el visor
+      i.tabIndex = 0; i.setAttribute("role", "button"); i.title = "Ver en grande";
+      i.addEventListener("click", () => abrirVisor(k));
+      i.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrirVisor(k); } });
       col.appendChild(i);
     } else col.appendChild(tile("", p.alt));
   });
@@ -378,22 +425,15 @@ $("fecha").min = hoy.toISOString().slice(0, 10);
 // Convierte la fecha del calendario a texto, ej. "domingo, 14 de marzo de 2027".
 const fechaTexto = v => new Date(v + "T12:00:00").toLocaleDateString("es-MX", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
 
-// BOTÓN DE WHATSAPP: solo se muestra si hay número en WA_NUMERO. Valida los campos obligatorios,
-// pide que el visitante deje su número de WhatsApp (si no, le avisa qué falta) y abre un chat con el mensaje ya escrito.
-const aviso = $("form-status");
-$("telefono").addEventListener("input", () => aviso.textContent = "");
+// BOTÓN DE WHATSAPP: solo se muestra si hay número en WA_NUMERO. Valida los campos obligatorios
+// y abre un chat de WhatsApp con el mensaje ya escrito. No hace falta pedir el número del visitante:
+// WhatsApp ya lo muestra cuando llega el mensaje, y desde ahí se le puede responder.
 $("wa").hidden = !WA_NUMERO;
 $("wa").addEventListener("click", () => {
   const form = $("form");
-  aviso.textContent = "";
   if (!form.reportValidity()) return;
   const d = Object.fromEntries(new FormData(form));
-  if (d.telefono.replace(/\D/g, "").length < 8) {
-    aviso.textContent = "Para enviar por WhatsApp escribe tu número de WhatsApp arriba, así podemos responderte.";
-    $("telefono").focus();
-    return;
-  }
-  const msg = `Hola Belikosa, quiero cotizar un evento.\nNombre: ${d.nombre}\nMi WhatsApp: ${d.telefono.trim()}\nCiudad: ${d.ciudad}\nFecha: ${fechaTexto(d.fecha)}\nTipo de evento: ${d.tipo || "-"}\n${d.mensaje ? "Mensaje: " + d.mensaje : ""}`;
+  const msg = `Hola Belikosa, quiero cotizar un evento.\nNombre: ${d.nombre}\nCiudad: ${d.ciudad}\nFecha: ${fechaTexto(d.fecha)}\nTipo de evento: ${d.tipo || "-"}\n${d.mensaje ? "Mensaje: " + d.mensaje : ""}`;
   window.open("https://wa.me/" + WA_PAIS + WA_NUMERO + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
 });
 
@@ -401,7 +441,6 @@ $("wa").addEventListener("click", () => {
 // y lo abre en la app de correo del visitante, dirigido a EMAIL.
 $("form").addEventListener("submit", e => {
   e.preventDefault();
-  aviso.textContent = "";
   const d = Object.fromEntries(new FormData(e.target));
   const body = `Nombre: ${d.nombre}\nCiudad: ${d.ciudad}\nFecha: ${fechaTexto(d.fecha)}\nTipo de evento: ${d.tipo || "-"}\n\n${d.mensaje || ""}`;
   location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Booking Belikosa")}&body=${encodeURIComponent(body)}`;
