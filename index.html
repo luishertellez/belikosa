@@ -20,10 +20,14 @@
      IMPORTANTE: estas direcciones deben coincidir con el enlace de tu GitHub Pages (terminan en /). Si cambias el nombre del repositorio o usas un dominio propio, actualízalas.
      La imagen es preview.jpg (1200x630) y debe estar en la raíz del repositorio, junto a index.html. -->
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Belikosa">
+<meta property="og:locale" content="es_MX">
 <meta property="og:title" content="Belikosa">
 <meta property="og:description" content="Los Creadores Del Sexo Tumbado. Corridos tumbados desde la CDMX.">
 <meta property="og:url" content="https://luishertellez.github.io/belikosa/">
 <meta property="og:image" content="https://luishertellez.github.io/belikosa/preview.jpg">
+<meta property="og:image:secure_url" content="https://luishertellez.github.io/belikosa/preview.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Logo de Belikosa sobre fondo negro">
@@ -53,7 +57,7 @@
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 /* Al tocar el menú, la página baja suavemente a la sección y deja espacio para el menú fijo. */
-html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px)}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px)}
 *,*:before,*:after{box-sizing:inherit}
 /* ESTILOS GENERALES: fondo, color y tipografía de toda la página. */
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.55 "Archivo",system-ui,sans-serif}
@@ -69,7 +73,7 @@ nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-weight:600}
 nav ul a{text-decoration:none}
 nav ul a:hover{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px}
 /* PORTADA: fondo rojo, logo grande centrado y el lema debajo. */
-.hero{background:var(--accent);color:#f0f1e1;padding:10vh 5vw 8vh;min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.hero{background:var(--accent);color:#f0f1e1;padding:10vh 5vw 8vh;min-height:80vh;min-height:80svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
 .hero h1{margin:0;width:min(92vw,1100px)}
 .hero p{font-size:clamp(20px,3vw,34px);margin:5vh 0 0;font-weight:800;color:#f0f1e1}
 /* SECCIONES Y TÍTULOS: espacios y tamaños de los títulos (Galería, Merch, Redes, Booking). */
@@ -145,7 +149,8 @@ label{display:grid;gap:6px;font-weight:600;font-size:15px}
 .form-status{margin:0;max-width:none;color:var(--fg);font-weight:600;font-size:15px;line-height:1.45}
 .form-status:not(:empty){padding:13px 16px;border:2px solid var(--line);border-left:6px solid var(--accent);background:rgba(240,241,225,.06)}
 input[type=date]{min-height:48px}
-input,textarea{font:inherit;color:var(--fg);background:transparent;border:2px solid var(--line);padding:11px 12px;border-radius:0;width:100%}
+/* Los campos miden 16px o más a propósito: si son más chicos, iPad y iPhone acercan la pantalla (zoom) al tocarlos y la página se mueve al salir. */
+input,textarea{font:inherit;font-size:16px;color:var(--fg);background:transparent;border:2px solid var(--line);padding:11px 12px;border-radius:0;width:100%}
 textarea{min-height:120px;resize:vertical}
 /* REDES: bloques grandes que se ponen rojos al pasar el cursor. */
 .socials{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));border:2px solid var(--line)}
@@ -279,15 +284,17 @@ const EMAIL = "bdebelikosa@gmail.com";
 const WA_PAIS = "52";
 const WA_NUMERO = "5645536468";
 
+// w y h: ancho y alto en píxeles de la foto. Sirven para reservar su espacio y que la página no "salte" al cargar (sobre todo en iPad/iPhone).
+// Si agregas una foto nueva, pon aquí sus medidas reales.
 // col: columna (0 izquierda, 1 centro, 2 derecha). Orden por paleta:
 // izquierda = blanco y negro, rojo, naranja · centro = azul y blanco · derecha = azul y ámbar
 const PHOTOS = [
-  {src:P.f1, alt:"Belikosa con guitarras en el backstage, en blanco y negro", col:0},
-  {src:P.f2, alt:"Belikosa en concierto bajo luz roja", col:0},
-  {src:P.f5, alt:"Los tres integrantes de Belikosa posando con sus guitarras", col:0},
-  {src:P.f3, alt:"Belikosa en concierto entre el humo", col:1},
-  {src:P.f4, alt:"Belikosa en el escenario con micrófonos y bajo", col:1},
-  {src:P.f6, alt:"Belikosa tocando frente al público bajo luces azules y ámbar", col:2}
+  {src:P.f1, w:1500, h:844, alt:"Belikosa con guitarras en el backstage, en blanco y negro", col:0},
+  {src:P.f2, w:1500, h:1000, alt:"Belikosa en concierto bajo luz roja", col:0},
+  {src:P.f5, w:1500, h:1000, alt:"Los tres integrantes de Belikosa posando con sus guitarras", col:0},
+  {src:P.f3, w:1500, h:1125, alt:"Belikosa en concierto entre el humo", col:1},
+  {src:P.f4, w:1500, h:1125, alt:"Belikosa en el escenario con micrófonos y bajo", col:1},
+  {src:P.f6, w:1022, h:1530, alt:"Belikosa tocando frente al público bajo luces azules y ámbar", col:2}
 ];
 
 // url: enlace al video (YouTube, Instagram, etc.)
@@ -362,6 +369,7 @@ lb.addEventListener("touchend", e => {
     if (p.src) {
       const i = new Image();
       i.src = p.src; i.alt = p.alt; i.className = "ph"; i.loading = "lazy";
+      if (p.w && p.h) { i.width = p.w; i.height = p.h; }   // espacio reservado
       const k = PHOTOS.indexOf(p);   // al tocar la foto se abre en el visor
       i.tabIndex = 0; i.setAttribute("role", "button"); i.title = "Ver en grande";
       i.addEventListener("click", () => abrirVisor(k));
@@ -443,7 +451,7 @@ $("form").addEventListener("keydown", e => {
 // El aviso se quita solo cuando el visitante vuelve a escribir.
 const aviso = $("form-status");
 const listo = txt => { aviso.textContent = txt; $("form").reset(); };
-$("form").addEventListener("input", () => aviso.textContent = "");
+$("form").addEventListener("input", () => { if (aviso.textContent) aviso.textContent = ""; });
 
 // BOTÓN DE WHATSAPP: solo se muestra si hay número en WA_NUMERO. Valida los campos obligatorios
 // y abre un chat de WhatsApp con el mensaje ya escrito. No hace falta pedir el número del visitante:
@@ -467,6 +475,17 @@ $("form").addEventListener("submit", e => {
   location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Booking Belikosa")}&body=${encodeURIComponent(body)}`;
   listo("Se abrió tu app de correo con el mensaje. Si no se abrió, escríbenos a " + EMAIL + ".");
 });
+
+// MENÚ: baja suave a la sección, solo al tocar un enlace del menú. (Antes era global y en iPad movía la página
+// al escribir en el formulario.)
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
+  const id = a.getAttribute("href");
+  const destino = id.length > 1 && document.querySelector(id);
+  if (!destino) return;
+  e.preventDefault();
+  destino.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+  history.replaceState(null, "", id);
+}));
 
 // AL RECARGAR LA PÁGINA: vuelve al inicio y el formulario se limpia.
 // Sin esto, el navegador recuerda dónde estabas (y lo que habías escrito) y parece que "no pasó nada".
