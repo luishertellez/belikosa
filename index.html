@@ -141,6 +141,9 @@ label{display:grid;gap:6px;font-weight:600;font-size:15px}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .btn.alt{background:transparent;color:var(--fg)}
 .btn.alt:hover{background:var(--fg);color:var(--bg)}
+/* Aviso de confirmación del formulario: letras blancas en una caja con borde y una barra roja a la izquierda; no ocupa espacio mientras está vacío. */
+.form-status{margin:0;max-width:none;color:var(--fg);font-weight:600;font-size:15px;line-height:1.45}
+.form-status:not(:empty){padding:13px 16px;border:2px solid var(--line);border-left:6px solid var(--accent);background:rgba(240,241,225,.06)}
 input[type=date]{min-height:48px}
 input,textarea{font:inherit;color:var(--fg);background:transparent;border:2px solid var(--line);padding:11px 12px;border-radius:0;width:100%}
 textarea{min-height:120px;resize:vertical}
@@ -185,7 +188,7 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
 
 <!-- BIOGRAFÍA: texto corto sin título. EDITA AQUÍ el texto entre <p> y </p>. -->
 <section class="bio">
-  <p>Somos tres amigos de la CDMX y hacemos corridos tumbados con el estilo de nuestra ciudad. Hemos abierto shows para artistas como Ememalafe y Fntxy, y hemos tocado en eventos como <a href="https://www.instagram.com/temperaturamx" target="_blank" rel="noopener">@temperaturamx</a> y <a href="https://www.instagram.com/zezzions/" target="_blank" rel="noopener">@zezzions</a>.</p>
+  <p>Somos tres amigos de la CDMX y hacemos corridos tumbados con el estilo de nuestra ciudad. Hemos abierto shows para artistas como Ememalafe y Fntxy, y hemos tocado en eventos como <a href="https://www.instagram.com/temperaturamx" target="_blank" rel="noopener">@temperaturamx</a> y <a href="https://www.instagram.com/zezzions/" target="_blank" rel="noopener">@zezzzionz</a>.</p>
   <p>También hemos pasado por bares y restaurantes como Godizilla Burguers, Dr. Bestia y Match Burguer Tlaxcala, y por eventos culturales como el Art Week CDMX y el Bazar Naviñero. Y si lo que buscas es música para tu fiesta, también tocamos en eventos privados, como cumpleaños y celebraciones.</p>
 </section>
 
@@ -233,6 +236,7 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
         <button class="btn" type="submit" id="enviar">Enviar por correo</button>
         <button class="btn alt" type="button" id="wa" hidden>Enviar por WhatsApp</button>
       </div>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
     </form>
   </div>
 </section>
@@ -425,6 +429,22 @@ $("fecha").min = hoy.toISOString().slice(0, 10);
 // Convierte la fecha del calendario a texto, ej. "domingo, 14 de marzo de 2027".
 const fechaTexto = v => new Date(v + "T12:00:00").toLocaleDateString("es-MX", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
 
+// ENTER EN EL FORMULARIO: antes enviaba el formulario y la página saltaba (por la validación o al abrir el correo).
+// Ahora Enter pasa al siguiente campo; en "Mensaje" sigue funcionando como salto de línea.
+$("form").addEventListener("keydown", e => {
+  if (e.key !== "Enter" || e.target.tagName !== "INPUT") return;
+  e.preventDefault();
+  const campos = [...e.currentTarget.querySelectorAll("input, textarea")];
+  const sig = campos[campos.indexOf(e.target) + 1];
+  if (sig) sig.focus();
+});
+
+// CONFIRMACIÓN: después de enviar por correo o WhatsApp se avisa y se limpia el formulario.
+// El aviso se quita solo cuando el visitante vuelve a escribir.
+const aviso = $("form-status");
+const listo = txt => { aviso.textContent = txt; $("form").reset(); };
+$("form").addEventListener("input", () => aviso.textContent = "");
+
 // BOTÓN DE WHATSAPP: solo se muestra si hay número en WA_NUMERO. Valida los campos obligatorios
 // y abre un chat de WhatsApp con el mensaje ya escrito. No hace falta pedir el número del visitante:
 // WhatsApp ya lo muestra cuando llega el mensaje, y desde ahí se le puede responder.
@@ -435,6 +455,7 @@ $("wa").addEventListener("click", () => {
   const d = Object.fromEntries(new FormData(form));
   const msg = `Hola Belikosa, quiero cotizar un evento.\nNombre: ${d.nombre}\nCiudad: ${d.ciudad}\nFecha: ${fechaTexto(d.fecha)}\nTipo de evento: ${d.tipo || "-"}\n${d.mensaje ? "Mensaje: " + d.mensaje : ""}`;
   window.open("https://wa.me/" + WA_PAIS + WA_NUMERO + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  listo("Se abrió WhatsApp con tu mensaje. Si no se abrió, inténtalo otra vez o escríbenos a " + EMAIL + ".");
 });
 
 // BOTÓN DE CORREO: no manda nada a un servidor. Arma un correo (mailto:) con los datos
@@ -444,7 +465,19 @@ $("form").addEventListener("submit", e => {
   const d = Object.fromEntries(new FormData(e.target));
   const body = `Nombre: ${d.nombre}\nCiudad: ${d.ciudad}\nFecha: ${fechaTexto(d.fecha)}\nTipo de evento: ${d.tipo || "-"}\n\n${d.mensaje || ""}`;
   location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Booking Belikosa")}&body=${encodeURIComponent(body)}`;
+  listo("Se abrió tu app de correo con el mensaje. Si no se abrió, escríbenos a " + EMAIL + ".");
 });
+
+// AL RECARGAR LA PÁGINA: vuelve al inicio y el formulario se limpia.
+// Sin esto, el navegador recuerda dónde estabas (y lo que habías escrito) y parece que "no pasó nada".
+// Si alguien abre un enlace directo a una sección (ej. .../#merch), ese sí se respeta.
+history.scrollRestoration = "manual";
+const tipoNav = performance.getEntriesByType("navigation")[0];
+if (tipoNav && tipoNav.type === "reload") {
+  history.replaceState(null, "", location.pathname + location.search);
+  window.scrollTo(0, 0);
+}
+window.addEventListener("load", () => setTimeout(() => $("form").reset(), 0));
 </script>
 </body>
 </html>
