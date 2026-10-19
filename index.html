@@ -12,9 +12,30 @@
 <!-- Hace que la página se ajuste al ancho del celular (diseño responsivo). -->
 <meta name="theme-color" content="#0a0a0a">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Belikosa</title>
+<title>Belikosa | Corridos tumbados desde la CDMX</title>
 <!-- Texto que ven Google y WhatsApp/redes cuando comparten el enlace. -->
-<meta name="description" content="Belikosa. Los Creadores Del Sexo Tumbado. Corridos tumbados desde la CDMX: galería, merch y booking.">
+<meta name="description" content="Belikosa es una banda de corridos tumbados de la CDMX. Mira sus fotos y videos, conoce su merch y contrátalos para tu evento, bar o festival.">
+<!-- SEO PARA BUSCADORES (Google, Bing, etc.)
+     - title y description: lo que se ve en los resultados de búsqueda. Mantén el título bajo ~60 caracteres y la descripción bajo ~160.
+     - canonical: le dice a Google cuál es la dirección oficial de la página. Si compras un dominio propio, cámbiala (aquí y en og:url, og:image y los datos de abajo).
+     - JSON-LD: datos estructurados para que Google entienda que Belikosa es una banda (nombre, género y redes). -->
+<link rel="canonical" href="https://luishertellez.github.io/belikosa/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  "name": "Belikosa",
+  "genre": "Corridos tumbados",
+  "description": "Belikosa es una banda de corridos tumbados de la CDMX.",
+  "url": "https://luishertellez.github.io/belikosa/",
+  "image": "https://luishertellez.github.io/belikosa/preview.jpg",
+  "sameAs": [
+    "https://www.instagram.com/bdebelikosa",
+    "https://www.tiktok.com/@bdebelikosa"
+  ]
+}
+</script>
 <!-- VISTA PREVIA AL COMPARTIR EL ENLACE (WhatsApp, Instagram, Facebook, X, etc.)
      Esas apps leen estas etiquetas para mostrar la foto, el título y el texto.
      IMPORTANTE: estas direcciones deben coincidir con el enlace de tu GitHub Pages (terminan en /). Si cambias el nombre del repositorio o usas un dominio propio, actualízalas.
@@ -22,8 +43,8 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Belikosa">
 <meta property="og:locale" content="es_MX">
-<meta property="og:title" content="Belikosa">
-<meta property="og:description" content="Los Creadores Del Sexo Tumbado. Corridos tumbados desde la CDMX.">
+<meta property="og:title" content="Belikosa | Corridos tumbados desde la CDMX">
+<meta property="og:description" content="Belikosa es una banda de corridos tumbados de la CDMX. Mira sus fotos y videos, conoce su merch y contrátalos para tu evento, bar o festival.">
 <meta property="og:url" content="https://luishertellez.github.io/belikosa/">
 <meta property="og:image" content="https://luishertellez.github.io/belikosa/preview.jpg">
 <meta property="og:image:secure_url" content="https://luishertellez.github.io/belikosa/preview.jpg">
@@ -32,8 +53,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Logo de Belikosa sobre fondo negro">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Belikosa">
-<meta name="twitter:description" content="Los Creadores Del Sexo Tumbado. Corridos tumbados desde la CDMX.">
+<meta name="twitter:title" content="Belikosa | Corridos tumbados desde la CDMX">
+<meta name="twitter:description" content="Belikosa es una banda de corridos tumbados de la CDMX. Mira sus fotos y videos, conoce su merch y contrátalos para tu evento, bar o festival.">
 <meta name="twitter:image" content="https://luishertellez.github.io/belikosa/preview.jpg">
 <!-- Ícono de la pestaña del navegador -->
 <link rel="icon" type="image/png" href="icono.png">
@@ -57,7 +78,9 @@
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 /* Al tocar el menú, la página baja suavemente a la sección y deja espacio para el menú fijo. */
-html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px)}
+html{-webkit-text-size-adjust:100%}
+/* Al ir a una sección desde el menú, se deja espacio para el menú fijo. Va en las secciones y no en toda la página para no afectar al enfocar las casillas. */
+section,header{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 56px)}
 *,*:before,*:after{box-sizing:inherit}
 /* ESTILOS GENERALES: fondo, color y tipografía de toda la página. */
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.55 "Archivo",system-ui,sans-serif}
@@ -65,24 +88,29 @@ a{color:inherit}
 :focus-visible{outline:3px solid var(--fg);outline-offset:3px}
 /* LOGO: usa la imagen del logo como máscara y la pinta con el color del texto (currentColor).
    Por eso el logo es blanco en la portada roja y negro/claro en el menú, según el fondo. */
+/* Texto solo para buscadores y lectores de pantalla (no se ve): da texto real al título principal, que visualmente es el logo. */
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0}
 .mark{display:block;background:currentColor;aspect-ratio:1500/503;-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
 /* MENÚ SUPERIOR: se queda fijo arriba al hacer scroll (position:sticky). */
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;padding:12px 5vw;background:var(--bg);border-bottom:2px solid var(--line)}
 nav .logo{width:92px;display:block}
+/* Mientras se escribe en el formulario el menú deja de ser fijo (en iPad el teclado y un menú fijo hacen que la página salte). */
+body.kb nav{position:relative}
 nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-weight:600}
 nav ul a{text-decoration:none}
 nav ul a:hover{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:5px}
 /* PORTADA: fondo rojo, logo grande centrado y el lema debajo. */
-.hero{background:var(--accent);color:#f0f1e1;padding:10vh 5vw 8vh;min-height:80vh;min-height:80svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.hero{background:var(--accent);color:#f0f1e1;padding:clamp(56px,7vw,96px) 5vw clamp(40px,5vw,72px);min-height:clamp(520px,52vw,720px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
 .hero h1{margin:0;width:min(92vw,1100px)}
-.hero p{font-size:clamp(20px,3vw,34px);margin:5vh 0 0;font-weight:800;color:#f0f1e1}
+.hero p{font-size:clamp(20px,3vw,34px);margin:clamp(24px,3.5vw,44px) 0 0;font-weight:800;color:#f0f1e1}
 /* SECCIONES Y TÍTULOS: espacios y tamaños de los títulos (Galería, Merch, Redes, Booking). */
-section{padding:12vh 5vw 8vh}
+/* Todos los espacios usan el ANCHO de la pantalla (vw) y no el alto (vh): en Chrome del iPhone el alto cambia al salir el teclado y la página saltaba. */
+section{padding:clamp(64px,8vw,112px) 5vw clamp(40px,5vw,72px)}
 /* Línea fina que separa una sección de la siguiente, ya que todas son negras. */
 section+section{border-top:2px solid var(--line)}
-h2{font-weight:800;font-size:clamp(38px,7vw,88px);line-height:1;letter-spacing:-.03em;margin:0 0 6vh}
+h2{font-weight:800;font-size:clamp(38px,7vw,88px);line-height:1;letter-spacing:-.03em;margin:0 0 clamp(28px,4vw,56px)}
 h3{font-size:19px;margin:0 0 4px}
-.sub{font-size:22px;font-weight:800;margin:6vh 0 18px}
+.sub{font-size:22px;font-weight:800;margin:clamp(28px,4vw,56px) 0 18px}
 /* Cuadrícula genérica; se usa en videos y merch. */
 .grid{display:grid;gap:14px}
 /* GALERÍA DE FOTOS: 3 columnas; cada foto mantiene su forma original, sin recortes. */
@@ -112,7 +140,7 @@ body.lb-open{overflow:hidden}
 .video span{font-weight:600}
 .video small{color:#a3a396}
 /* MINIATURA del video: foto de YouTube de fondo, con degradado oscuro para que se lea el título. */
-#videos{margin-top:6vh}
+#videos{margin-top:clamp(28px,4vw,56px)}
 .video .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .video:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.85));pointer-events:none}
 .video:before{z-index:2;filter:drop-shadow(0 0 6px rgba(0,0,0,.6))}
@@ -122,13 +150,13 @@ body.lb-open{overflow:hidden}
 .item .tile{aspect-ratio:1;margin-bottom:12px}
 .item p{margin:0 0 10px;color:var(--muted)}
 /* BIOGRAFÍA: bloque negro con texto corto, sin título, justo debajo de la portada roja. */
-.bio{background:#0a0a0a;color:#f0f1e1;padding:11vh 5vw}
+.bio{background:#0a0a0a;color:#f0f1e1;padding:clamp(56px,7vw,100px) 5vw}
 .bio p+p{margin-top:1.2em}
 .bio p{max-width:62ch;margin:0 auto;text-align:left;font-size:clamp(18px,2vw,24px);line-height:1.6;font-weight:600}
 .bio a{font-weight:800;text-decoration:none}
 .bio a:hover{text-decoration:underline}
 /* Texto de "cómo comprar" arriba de las playeras y mensajito bajo cada botón. */
-.merch-note{max-width:52ch;margin:-3vh 0 5vh;font-size:19px}
+.merch-note{max-width:52ch;margin:calc(-1 * clamp(14px,2vw,28px)) 0 clamp(24px,3.4vw,40px);font-size:19px}
 .merch-note a{font-weight:800;text-decoration:none}
 .merch-note a:hover{text-decoration:underline}
 .hint{display:block;margin-top:8px;color:var(--muted);font-size:13px}
@@ -160,7 +188,7 @@ textarea{min-height:120px;resize:vertical}
 .socials a:hover{background:var(--accent);color:#f0f1e1}
 .socials a:hover span{color:#f0f1e1}
 /* PIE DE PÁGINA: © y correo. */
-footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;color:var(--muted);font-size:15px}
+footer{margin-top:clamp(40px,5vw,72px);padding:28px 5vw 36px;border-top:2px solid var(--line);display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;color:var(--muted);font-size:15px}
 /* CELULAR (pantallas de 720 px o menos): menú más compacto y columnas apiladas una debajo de otra. */
 @media (max-width:720px){
   nav ul{gap:14px;font-size:15px}
@@ -187,12 +215,15 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
 
 <!-- PORTADA: logo grande y el lema. El logo es un <i class="mark"> que el CSS rellena con la imagen. -->
 <header class="hero" id="top">
-  <h1 aria-label="Belikosa"><i class="mark"></i></h1>
+  <h1><i class="mark" aria-hidden="true"></i><span class="sr">Belikosa, banda de corridos tumbados de la CDMX</span></h1>
   <p>Los Creadores Del Sexo Tumbado</p>
 </header>
 
+<main>
+
 <!-- BIOGRAFÍA: texto corto sin título. EDITA AQUÍ el texto entre <p> y </p>. -->
 <section class="bio">
+  <h2 class="sr">Biografía de Belikosa</h2>
   <p>Somos tres amigos de la CDMX y hacemos corridos tumbados con el estilo de nuestra ciudad. Hemos abierto shows para artistas como Ememalafe y Fntxy, y hemos tocado en eventos como <a href="https://www.instagram.com/temperaturamx" target="_blank" rel="noopener">@temperaturamx</a> y <a href="https://www.instagram.com/zezzions/" target="_blank" rel="noopener">@zezzions</a>.</p>
   <p>También hemos pasado por bares y restaurantes como Godizilla Burguers, Dr. Bestia y Match Burguer Tlaxcala, y por eventos culturales como el Art Week CDMX y el Bazar Naviñero. Y si lo que buscas es música para tu fiesta, también tocamos en eventos privados, como cumpleaños y celebraciones.</p>
 </section>
@@ -245,6 +276,8 @@ footer{margin-top:8vh;padding:28px 5vw 36px;border-top:2px solid var(--line);dis
     </form>
   </div>
 </section>
+
+</main>
 
 <!-- PIE DE PÁGINA. -->
 <footer>
@@ -436,6 +469,54 @@ $("fecha").min = hoy.toISOString().slice(0, 10);
 
 // Convierte la fecha del calendario a texto, ej. "domingo, 14 de marzo de 2027".
 const fechaTexto = v => new Date(v + "T12:00:00").toLocaleDateString("es-MX", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+
+// TECLADO EN iPAD/iPHONE: cuando se abre el teclado, el navegador mueve la página para mostrar el campo y,
+// si el formulario está al final, al cerrar el teclado la página "se sube". Para evitarlo, mientras se escribe
+// se agrega espacio vacío debajo de la página y se quita solo cuando ya no hace que la página se mueva.
+let espacioExtra = 0;
+const quitarEspacio = () => {
+  if (!espacioExtra || $("form").contains(document.activeElement)) return;
+  const sinEspacio = document.documentElement.scrollHeight - espacioExtra;
+  if (window.scrollY + window.innerHeight <= sinEspacio) {
+    document.body.style.paddingBottom = ""; document.body.classList.remove("kb"); espacioExtra = 0;
+  }
+};
+$("form").addEventListener("focusin", () => {
+  if (!espacioExtra) { espacioExtra = Math.round(window.innerHeight * 0.5); document.body.style.paddingBottom = espacioExtra + "px"; }
+  document.body.classList.add("kb");
+});
+$("form").addEventListener("focusout", () => setTimeout(quitarEspacio, 700));
+window.addEventListener("scroll", quitarEspacio, {passive:true});
+
+// RED DE SEGURIDAD EN PANTALLAS TÁCTILES: en Chrome/Google del iPhone y iPad la página a veces salta lejos al tocar una
+// casilla del formulario o al salir de ella. Esto la regresa: (1) mientras se escribe, si la casilla activa queda fuera
+// de la pantalla, la vuelve a mostrar; (2) justo después de salir de una casilla, si la página salta, regresa a donde estaba.
+// No interviene cuando el visitante mueve la página con el dedo ni cuando toca un enlace del menú.
+if (matchMedia("(pointer: coarse)").matches) {
+  const vv = window.visualViewport;
+  let tocando = false, finToque = 0, yBlur = 0, hastaBlur = 0, ocupado = false;
+  const libre = () => !tocando && Date.now() - finToque > 450;
+  const enCampo = () => $("form").contains(document.activeElement) && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+  const hacer = fn => { ocupado = true; fn(); requestAnimationFrame(() => { ocupado = false; }); };
+  const asegurarVisible = () => {
+    if (!enCampo() || !libre()) return;
+    const r = document.activeElement.getBoundingClientRect();
+    const alto = vv ? vv.height : innerHeight, arriba = vv ? vv.offsetTop : 0;
+    const top = r.top - arriba, fondo = r.bottom - arriba;
+    if (top < 0 || fondo > alto) hacer(() => window.scrollBy(0, top - alto * 0.3));
+  };
+  addEventListener("touchstart", () => { tocando = true; hastaBlur = 0; }, {passive:true});
+  addEventListener("touchend", () => { tocando = false; finToque = Date.now(); }, {passive:true});
+  addEventListener("touchcancel", () => { tocando = false; finToque = Date.now(); }, {passive:true});
+  document.addEventListener("click", e => { if (e.target.closest("a")) hastaBlur = 0; }, true);
+  $("form").addEventListener("focusin", () => { hastaBlur = 0; [150, 400, 800, 1300].forEach(t => setTimeout(asegurarVisible, t)); });
+  $("form").addEventListener("focusout", () => { yBlur = window.scrollY; hastaBlur = Date.now() + 1200; });
+  if (vv) vv.addEventListener("resize", () => setTimeout(asegurarVisible, 120));
+  addEventListener("scroll", () => {
+    if (ocupado || !libre() || Date.now() > hastaBlur) return;
+    if (Math.abs(window.scrollY - yBlur) > 120) hacer(() => window.scrollTo(0, yBlur));
+  }, {passive:true});
+}
 
 // ENTER EN EL FORMULARIO: antes enviaba el formulario y la página saltaba (por la validación o al abrir el correo).
 // Ahora Enter pasa al siguiente campo; en "Mensaje" sigue funcionando como salto de línea.
